@@ -28,5 +28,12 @@ namespace BP_Api.Controllers
         {
             return contactService_.GetContactById(id);
         }
+
+        [HttpPost]
+        public ContactDVO CreateContact(ContactDVO contactDVO)
+        {
+            //100den büyük değilse geri döner 
+            return contactDVO;
+        }
     }
 }

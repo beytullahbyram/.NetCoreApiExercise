@@ -1,5 +1,9 @@
 using BP_Api.Extension;
+using BP_Api.Models;
 using BP_Api.Service;
+using BP_Api.Validations;
+using FluentValidation;
+using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 
 namespace BP_Api
@@ -25,14 +29,20 @@ namespace BP_Api
             var builder = WebApplication.CreateBuilder(args);
 
             
-            builder.Services.AddControllers();
+            builder.Services.AddControllers()
+                .AddFluentValidation();
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
             builder.Services.AddHealthChecks();
+
             //Depencedy injecktion
             builder.Services.ConfigureMapping();
             builder.Services.AddScoped<IContactService,ContactService>();
+            //AddTransient => bir request içerisinde bir den fazla modelde ayný iþlem
+            //yapýlýyorsa bütün hepsi için kontrol edilmesi gerekir
+
+            builder.Services.AddTransient<IValidator<ContactDVO>,ContactValidator>();
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
