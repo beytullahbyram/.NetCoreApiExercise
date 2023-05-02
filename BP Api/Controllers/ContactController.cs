@@ -23,6 +23,8 @@ namespace BP_Api.Controllers
             return configuration_["ReadMe"].ToString();    
         }
 
+
+        [ResponseCache(Duration = 10)] // 10.saniyeden sonra tekrar istek gelirse methoddan devam edecek
         [HttpGet("{id}")]
         public ContactDVO GetContactById(int id)
         {

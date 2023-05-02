@@ -35,7 +35,12 @@ namespace BP_Api
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
             builder.Services.AddHealthChecks();
-
+            builder.Services.AddHttpClient("garantiapi", config =>
+            {
+                //yukarýdaki banka apisi çaðrýldýðýnda baseadress set edilecek
+                config.BaseAddress=new Uri("https://www.garanti.com");
+                config.DefaultRequestHeaders.Add("Authorization","Value 123123");
+            });
             //Depencedy injecktion
             builder.Services.ConfigureMapping();
             builder.Services.AddScoped<IContactService,ContactService>();
@@ -52,7 +57,7 @@ namespace BP_Api
                 app.UseSwaggerUI();
             }
 
-             
+            app.UseResponseCaching();   
             app.UseCustomHealthCheck();
             
             app.UseHttpsRedirection();

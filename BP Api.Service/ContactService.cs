@@ -12,9 +12,11 @@ namespace BP_Api.Service
     public class ContactService : IContactService
     {
         private readonly IMapper mapper_;
-        public ContactService(IMapper mapper)
+        private readonly IHttpClientFactory httpClientFactory_;
+        public ContactService(IMapper mapper,IHttpClientFactory httpClientFactory)
         {
             mapper_ = mapper;  
+            httpClientFactory_ = httpClientFactory; 
         }
 
 
@@ -22,6 +24,19 @@ namespace BP_Api.Service
         {
             //Veri tabanından veri getirme işlemi
             Contact dbContact=getFakeContact();
+            
+            var client = httpClientFactory_.CreateClient("garantiapi");
+
+            //HttpClient client= new HttpClient();
+            //client.BaseAddress = new Uri("örnekbankaadresi.com");//gideceği ana adress
+
+            //// web sunucusunun bir web sayfasına ulaşmaya çalışan tarayıcıya verdiği yanıttır.
+            //client.DefaultRequestHeaders.Add("Authorization","Value 123123");
+
+            //String get = await client.GetStringAsync("/api/getpayment");
+
+            //client.Dispose();
+
             ////Mapping işlemi
             ////1
             //ContactDVO resultContactDVO=new ContactDVO();
@@ -29,6 +44,8 @@ namespace BP_Api.Service
             
             //2
             ContactDVO resDVO=mapper_.Map<ContactDVO>(dbContact);
+
+
             return resDVO;
         }
 
